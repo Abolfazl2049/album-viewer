@@ -1,0 +1,22 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@heroicons/vue": "^2.1.5",
+    "@nuxtjs/tailwindcss": "^6.12.1",
+    "nuxt": "^3.12.4",
+    "vue": "latest",
+    "vue3-dropzone": "^2.2.1"
+  },
+  "devDependencies": {
+    "nuxt-headlessui": "^1.2.0"
+  }
+}
