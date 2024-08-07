@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: {enabled: true},
   css: ["~/public/css/style.css"],
-  modules: ["@nuxtjs/tailwindcss", "nuxt-headlessui"],
+  modules: ["@nuxtjs/tailwindcss", "nuxt-headlessui", "nuxt-headlessui"],
   headlessui: {
     prefix: ""
   }
