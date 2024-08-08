@@ -3,7 +3,7 @@ let props = defineProps(["show", "data"]);
 </script>
 <template>
   <TransitionRoot appear :show="props.show" as="template">
-    <Dialog as="div" @close="$emit('close')" class="relative z-[1000]">
+    <Dialog as="div" @close="$emit('close')" class="relative z-[10] bg-gray-600">
       <TransitionChild
         as="template"
         enter="duration-300 ease-out"
@@ -24,7 +24,7 @@ let props = defineProps(["show", "data"]);
             leave="duration-200 ease-in"
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95">
-            <DialogPanel class="w-full max-w-md transform overflow-hidden rounded-2xl bg-light-main p-6 shadow-xl transition-all dark:bg-dark-main">
+            <DialogPanel class="w-full max-w-md transform overflow-hidden rounded-2xl bg-light-main p-6 shadow-xl transition-all bg-gray-700">
               <slot />
             </DialogPanel>
           </TransitionChild>

@@ -7,7 +7,17 @@ let showModal = ref(true);
 let intervalScroll = ref();
 let scrollSpeed = ref();
 function onDrop(acceptFiles: File[]) {
-  for (let i = 0; i < acceptFiles.length; i++) imgs.value.push(URL.createObjectURL(acceptFiles[i]));
+  imgs.value = [];
+  acceptFiles.sort((a, b) => {
+    let x = a.name;
+    let y = b.name;
+    if (/\d/.test(x) && /\d/.test(y)) {
+      return Number(x.match(/\d/)) - Number(y.match(/\d/));
+    }
+  });
+  for (let i = 0; i < acceptFiles.length; i++) {
+    imgs.value.push(URL.createObjectURL(acceptFiles[i]));
+  }
   showModal.value = false;
 }
 let setIntervalScroll = () => {
@@ -52,10 +62,10 @@ onMounted(() => {
         scrollTo("next");
         break;
       case "w":
-        scrollBy({top: -40, behavior: "smooth"});
+        scrollBy({top: -60, behavior: "smooth"});
         break;
       case "s":
-        scrollBy({top: 40, behavior: "smooth"});
+        scrollBy({top: 60, behavior: "smooth"});
         break;
       case " ":
         stopIntervalScroll();
