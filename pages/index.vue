@@ -20,7 +20,7 @@ function onDrop(acceptFiles: File[]) {
 let setIntervalScroll = () => {
   clearInterval(intervalScroll.value);
   intervalScroll.value = setInterval(() => {
-    scrollMethod.value === "section" ? scrollTo("next") : scrollBy({top: 60, behavior: "smooth"});
+    scrollMethod.value === "section" ? scrollTo("next") : scrollBy({top: 70, behavior: "smooth"});
   }, scrollSpeed.value * 1000);
 };
 let stopIntervalScroll = () => clearInterval(intervalScroll.value);
@@ -53,10 +53,10 @@ onMounted(() => {
         scrollTo("next");
         break;
       case "w":
-        scrollBy({top: -60, behavior: "smooth"});
+        scrollBy({top: -70, behavior: "smooth"});
         break;
       case "s":
-        scrollBy({top: 60, behavior: "smooth"});
+        scrollBy({top: 70, behavior: "smooth"});
         break;
       case " ":
         stopIntervalScroll();
