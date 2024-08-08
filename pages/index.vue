@@ -69,8 +69,8 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="min-h-screen bg-gray-700">
-    <nav class="flex items-center justify-between border-b border-blue-600 p-2 *:h-[45px]">
+  <div class="min-h-screen bg-gray-700 pt-[70px]">
+    <nav class="flex items-center justify-between border-b border-blue-600 p-2 *:h-[45px] fixed w-full bg-gray-700 top-0">
       <div class="flex items-center gap-1">
         <p class="rounded-lg bg-blue-600 px-4 pt-2 pb-3">scroll speed :</p>
         <input
