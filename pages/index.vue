@@ -5,7 +5,8 @@ const {getRootProps, getInputProps, open, ...rest} = useDropzone({onDrop});
 let imgs = ref<string[]>([]);
 let showModal = ref(true);
 let intervalScroll = ref();
-let scrollSpeed = ref();
+let NormalScrollSpeed = ref(70);
+let scrollEvery = ref();
 let scrollMethod = ref("section");
 function onDrop(acceptFiles: File[]) {
   imgs.value = [];
@@ -20,8 +21,8 @@ function onDrop(acceptFiles: File[]) {
 let setIntervalScroll = () => {
   clearInterval(intervalScroll.value);
   intervalScroll.value = setInterval(() => {
-    scrollMethod.value === "section" ? scrollTo("next") : scrollBy({top: 70, behavior: "smooth"});
-  }, scrollSpeed.value * 1000);
+    scrollMethod.value === "section" ? scrollTo("next") : scrollBy({top: NormalScrollSpeed.value, behavior: "smooth"});
+  }, scrollEvery.value * 1000);
 };
 let stopIntervalScroll = () => clearInterval(intervalScroll.value);
 let scrollTo = (direction: "prev" | "next") => {
@@ -53,10 +54,10 @@ onMounted(() => {
         scrollTo("next");
         break;
       case "w":
-        scrollBy({top: -70, behavior: "smooth"});
+        scrollBy({top: -NormalScrollSpeed.value, behavior: "smooth"});
         break;
       case "s":
-        scrollBy({top: 70, behavior: "smooth"});
+        scrollBy({top: NormalScrollSpeed.value, behavior: "smooth"});
         break;
       case " ":
         stopIntervalScroll();
@@ -69,13 +70,20 @@ onMounted(() => {
 </script>
 <template>
   <div class="min-h-screen bg-gray-700">
-    <nav class="flex items-center justify-between border-b border-blue-600 p-2">
+    <nav class="flex items-center justify-between border-b border-blue-600 p-2 *:h-[45px]">
+      <div class="flex items-center gap-1">
+        <p class="rounded-lg bg-blue-600 px-4 pt-2 pb-3">scroll speed :</p>
+        <input
+          type="number"
+          class="border border-blue-600 rounded-lg p-[9px] h-[44px] mr-2 text-black w-[80px]"
+          v-model="NormalScrollSpeed"
+          placeholder="second" />
+      </div>
       <button class="rounded-lg bg-blue-600 px-4 pt-2 pb-3" @click="showModal = true">open file</button>
-      <p class="font-sans">with vue3-dropzone</p>
     </nav>
     <div class="flex flex-col gap-2 p-5">
       <p class="text-xl font-bold">images list :</p>
-      <div class="flex flex-col justify-center">
+      <div class="flex flex-col justify-center p-5">
         <img v-for="i in imgs" :id="i" :src="i" class="max-w-full my-2 object-fit" />
       </div>
       <div class="fixed bottom-5 right-5 flex flex-col gap-2 text-sm">
@@ -91,9 +99,9 @@ onMounted(() => {
                 <p>scroll every :</p>
                 <input
                   type="number"
-                  @keydown="setIntervalScroll"
+                  @keydown.enter="setIntervalScroll"
                   class="border border-blue-600 rounded-lg p-1.5"
-                  v-model="scrollSpeed"
+                  v-model="scrollEvery"
                   placeholder="second"
                   maxlength="2" />
               </div>
