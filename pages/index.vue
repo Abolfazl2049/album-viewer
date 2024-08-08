@@ -53,17 +53,21 @@ onMounted(() => {
       case "d":
         scrollTo("next");
         break;
+      case " ":
+        stopIntervalScroll();
+        break;
+      case "e":
+        document.getElementById("menuBtn")?.click();
+    }
+  });
+  document.body.addEventListener("keydown", x => {
+    switch (x.key) {
       case "w":
         scrollBy({top: -NormalScrollSpeed.value, behavior: "smooth"});
         break;
       case "s":
         scrollBy({top: NormalScrollSpeed.value, behavior: "smooth"});
         break;
-      case " ":
-        stopIntervalScroll();
-        break;
-      case "e":
-        document.getElementById("menuBtn")?.click();
     }
   });
 });
