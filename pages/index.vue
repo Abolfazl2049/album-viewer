@@ -5,9 +5,10 @@ const {getRootProps, getInputProps, open, ...rest} = useDropzone({onDrop});
 let imgs = ref<string[]>([]);
 let showModal = ref(true);
 let intervalScroll = ref();
-let NormalScrollSpeed = ref(70);
+let normalScrollSpeed = ref(70);
 let scrollEvery = ref();
 let scrollMethod = ref("section");
+let windowScroll = 0;
 function onDrop(acceptFiles: File[]) {
   imgs.value = [];
   acceptFiles.sort((a, b) => {
@@ -21,7 +22,7 @@ function onDrop(acceptFiles: File[]) {
 let setIntervalScroll = () => {
   clearInterval(intervalScroll.value);
   intervalScroll.value = setInterval(() => {
-    scrollMethod.value === "section" ? scrollTo("next") : scrollBy({top: NormalScrollSpeed.value, behavior: "smooth"});
+    scrollMethod.value === "section" ? scrollTo("next") : scrollBy({top: normalScrollSpeed.value, behavior: "smooth"});
   }, scrollEvery.value * 1000);
 };
 let stopIntervalScroll = () => clearInterval(intervalScroll.value);
@@ -44,6 +45,7 @@ let scrollTo = (direction: "prev" | "next") => {
     }
   }
 };
+let showNav = ref(true);
 onMounted(() => {
   document.body.addEventListener("keypress", x => {
     switch (x.key) {
@@ -63,24 +65,30 @@ onMounted(() => {
   document.body.addEventListener("keydown", x => {
     switch (x.key) {
       case "w":
-        scrollBy({top: -NormalScrollSpeed.value, behavior: "smooth"});
+        scrollBy({top: -normalScrollSpeed.value, behavior: "smooth"});
         break;
       case "s":
-        scrollBy({top: NormalScrollSpeed.value, behavior: "smooth"});
+        scrollBy({top: normalScrollSpeed.value, behavior: "smooth"});
         break;
     }
   });
+  window.onscroll = function (e) {
+    showNav.value = this.oldScroll > this.scrollY;
+    this.oldScroll = this.scrollY;
+  };
 });
 </script>
 <template>
-  <div class="min-h-screen bg-gray-700 pt-[70px]">
-    <nav class="flex items-center justify-between border-b border-blue-600 p-2 *:h-[45px] fixed w-full bg-gray-700 top-0">
+  <div class="min-h-screen bg-gray-700" :class="{'pt-[70px]': showNav}">
+    <nav
+      class="flex items-center justify-between border-b border-blue-600 p-2 *:h-[45px] fixed w-full bg-gray-700 top-0 transition-opacity duration-1000"
+      :class="{'opacity-20': !showNav}">
       <div class="flex items-center gap-1">
         <p class="rounded-lg bg-blue-600 px-4 pt-2 pb-3">scroll speed :</p>
         <input
           type="number"
           class="border border-blue-600 rounded-lg p-[9px] h-[44px] mr-2 text-black w-[80px]"
-          v-model="NormalScrollSpeed"
+          v-model="normalScrollSpeed"
           placeholder="second" />
       </div>
       <button class="rounded-lg bg-blue-600 px-4 pt-2 pb-3" @click="showModal = true">open file</button>
@@ -141,7 +149,7 @@ onMounted(() => {
     </div>
     <ModalGlobalBase :show="showModal" @close="showModal = false">
       <div v-bind="getRootProps()" class="rounded-lg border p-5 [direction:ltr]">
-        <input v-bind="getInputProps()" />
+        <input v-bind="getInputProps()" webkitdirectory directory />
         <p>you can drag your file's or folder here too !! <br /></p>
         <button class="mt-9 rounded-lg bg-blue-600 px-4 py-2" @click="open">open your file's or folder</button>
       </div>
