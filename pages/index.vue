@@ -8,7 +8,6 @@ let intervalScroll = ref();
 let normalScrollSpeed = ref(70);
 let scrollEvery = ref();
 let scrollMethod = ref("section");
-let windowScroll = 0;
 function onDrop(acceptFiles: File[]) {
   imgs.value = [];
   acceptFiles.sort((a, b) => {
@@ -19,10 +18,10 @@ function onDrop(acceptFiles: File[]) {
   for (let i = 0; i < acceptFiles.length; i++) imgs.value.push(URL.createObjectURL(acceptFiles[i]));
   showModal.value = false;
 }
-let setIntervalScroll = () => {
+let setIntervalScroll = (reverse?: Boolean) => {
   clearInterval(intervalScroll.value);
   intervalScroll.value = setInterval(() => {
-    scrollMethod.value === "section" ? scrollTo("next") : scrollBy({top: normalScrollSpeed.value, behavior: "smooth"});
+    scrollMethod.value === "section" ? scrollTo("next") : scrollBy({top: reverse ? 0 - normalScrollSpeed.value : normalScrollSpeed.value, behavior: "smooth"});
   }, scrollEvery.value * 1000);
 };
 let stopIntervalScroll = () => clearInterval(intervalScroll.value);
@@ -48,29 +47,34 @@ let scrollTo = (direction: "prev" | "next") => {
 let showNav = ref(true);
 onMounted(() => {
   document.body.addEventListener("keypress", x => {
-    switch (x.key) {
-      case "a":
+    switch (x.code) {
+      case "KeyA":
         scrollTo("prev");
         break;
-      case "d":
+      case "KeyD":
         scrollTo("next");
         break;
-      case " ":
+      case "Space":
         stopIntervalScroll();
         break;
-      case "e":
+      case "KeyE":
         document.getElementById("menuBtn")?.click();
     }
   });
   document.body.addEventListener("keydown", x => {
-    switch (x.key) {
-      case "w":
-        scrollBy({top: -normalScrollSpeed.value, behavior: "smooth"});
+    switch (x.code) {
+      case "KeyW":
+        scrollMethod.value = "normal";
+        setIntervalScroll(true);
         break;
-      case "s":
-        scrollBy({top: normalScrollSpeed.value, behavior: "smooth"});
+      case "KeyS":
+        scrollMethod.value = "normal";
+        setIntervalScroll();
         break;
     }
+  });
+  document.addEventListener("keyup", x => {
+    if (x.code === "KeyW" || x.code === "KeyS") stopIntervalScroll();
   });
   window.onscroll = function (e) {
     showNav.value = this.oldScroll > this.scrollY;
@@ -91,7 +95,7 @@ onMounted(() => {
           v-model="normalScrollSpeed"
           placeholder="second" />
       </div>
-      <button class="rounded-lg bg-blue-600 px-4 pt-2 pb-3" @click="showModal = true">open file</button>
+      <button class="rounded-lg bg-blue-600 px-4 pt-2 pb-3" @click="showModal = true">open folder</button>
     </nav>
     <div class="flex flex-col gap-2 p-5">
       <p class="text-xl font-bold">images list :</p>
@@ -151,7 +155,7 @@ onMounted(() => {
       <div v-bind="getRootProps()" class="rounded-lg border p-5 [direction:ltr]">
         <input v-bind="getInputProps()" webkitdirectory directory />
         <p>you can drag your file's or folder here too !! <br /></p>
-        <button class="mt-9 rounded-lg bg-blue-600 px-4 py-2" @click="open">open your file's or folder</button>
+        <button class="mt-9 rounded-lg bg-blue-600 px-4 py-2" @click="open">open your folder</button>
       </div>
     </ModalGlobalBase>
   </div>
