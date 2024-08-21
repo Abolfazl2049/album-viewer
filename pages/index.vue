@@ -115,7 +115,7 @@ onMounted(() => {
                 <p>scroll every :</p>
                 <input
                   type="number"
-                  @keydown.enter="setIntervalScroll"
+                  @keydown.enter="setIntervalScroll()"
                   class="border border-blue-600 rounded-lg p-1.5"
                   v-model="scrollEvery"
                   placeholder="second"
@@ -137,7 +137,7 @@ onMounted(() => {
                 </RadioGroup>
               </div>
               <div class="mt-4 flex pr-1 flex-col gap-2">
-                <MenuButton class="rounded-lg bg-blue-600 px-4 pb-2 pt-1 text-white" @click="setIntervalScroll">go</MenuButton>
+                <MenuButton class="rounded-lg bg-blue-600 px-4 pb-2 pt-1 text-white" @click="setIntervalScroll()">go</MenuButton>
                 <button class="rounded-lg bg-blue-600 px-4 pb-2 pt-1 text-white" @click="stopIntervalScroll">stop</button>
               </div>
             </MenuItems>
